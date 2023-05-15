@@ -1,0 +1,40 @@
+version: '3'
+services:
+
+######################################################
+# AIRFLOW
+######################################################
+
+  airflow:
+    build: ./docker/airflow
+    restart: always
+    container_name: airflow
+    volumes:
+      - ./mnt/airflow/airflow.cfg:/opt/airflow/airflow.cfg
+      - ./mnt/airflow/dags:/opt/airflow/dags
+      - ./mnt/airflow/io_config.yaml:/opt/airflow/io_config.yaml
+    ports:
+      - 8080:8080
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "airflow", "8080" ]
+      timeout: 300s
+      interval: 10s
+      retries: 3
+
+######################################################
+# MAGE
+######################################################
+  mage_demo_etl_pipeline:
+    build: ./mnt/airflow/dags/mage_projects/demo
+    restart: always
+    container_name: mage_demo_etl_pipeline
+    volumes:
+      - ./mnt/airflow/dags/mage_projects/demo:/home/mage_code
+      - ./mnt/airflow/io_config.yaml:/home/mage_code/demo_etl_pipeline/io_config.yaml    
+    ports:
+      - 6789:6789
+    healthcheck:
+      test: [ "CMD", "nc", "-z", "mage_demo_etl_pipeline", "6789" ]
+      timeout: 300s
+      interval: 10s
+      retries: 3

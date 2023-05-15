@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../airflow/airflow-section-3"
+		}
+	],
+	"settings": {}
+}

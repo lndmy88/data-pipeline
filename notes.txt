@@ -1,0 +1,6 @@
+- To start the system:
+./start.sh
+
+	-> This will first build the airflow-base image which are defined in docker/airflow
+	Then start all the containers
+
